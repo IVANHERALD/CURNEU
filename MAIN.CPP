@@ -70,7 +70,7 @@ void histDisplay(int histogram[], const char* name)
             Scalar(0, 0, 0), 1, 8, 0);
     }
 
-    // display histogram
+    
     namedWindow(name, WINDOW_AUTOSIZE);
     imshow(name, histImage);
 }
@@ -79,7 +79,7 @@ void histDisplay(int histogram[], const char* name)
 
 int main()
 {
-    // Load the image
+    
     Mat image = imread("E:\\Cerneu\\sample.png");
 
     // Generate the histogram
@@ -90,18 +90,18 @@ int main()
     int size = image.rows * image.cols;
     float alpha = 255.0 / size;
 
-    // Calculate the probability of each intensity
+    
     float PrRk[256];
     for (int i = 0; i < 256; i++)
     {
         PrRk[i] = (double)histogram[i] / size;
     }
 
-    // Generate cumulative frequency histogram
+    
     int cumhistogram[256];
     cumhist(histogram, cumhistogram);
 
-    // Scale the histogram
+    
     int Sk[256];
     for (int i = 0; i < 256; i++)
     {
@@ -109,7 +109,7 @@ int main()
     }
 
 
-    // Generate the equlized histogram
+   
     float PsSk[256];
     for (int i = 0; i < 256; i++)
     {
@@ -126,25 +126,25 @@ int main()
         final[i] = cvRound(PsSk[i] * 255);
 
 
-    // Generate the equlized image
+    
     Mat new_image = image.clone();
 
     for (int y = 0; y < image.rows; y++)
         for (int x = 0; x < image.cols; x++)
             new_image.at<uchar>(y, x) = saturate_cast<uchar>(Sk[image.at<uchar>(y, x)]);
 
-    // Display the original Image
+    
     namedWindow("Original Image");
     imshow("Original Image", image);
 
-    // Display the original Histogram
+    
     histDisplay(histogram, "Original Histogram");
 
-    // Display equilized image
+    
     namedWindow("Equilized Image");
     imshow("Equilized Image", new_image);
 
-    // Display the equilzed histogram
+    
     histDisplay(final, "Equilized Histogram");
 
     waitKey();
